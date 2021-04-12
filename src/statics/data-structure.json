@@ -1,40 +1,46 @@
 {
-    "users": {
-        "USERID1": {
-            "name": "Boboy",
-            "email": "boboy@gmail.com",
-            "onLine": true
-        },
-        "USERID2": {
-            "name": "Yayan ",
-            "email": "yayan@gmail.com",
-            "onLine": true
+    "chats" : {
+      "oBq0PAYemhMu7wnhSOThRGeff3g1" : {
+        "OdMedklTCpaDWDdWoolZ3cm3HpQ2" : {
+          "MESSAGEID1" : {
+            "from" : "them",
+            "text" : "Hi injing"
+          },
+          "MESSAGEID2" : {
+            "from" : "me",
+            "text" : "Hallo Pig"
+          }
         }
+      },
+      "OdMedklTCpaDWDdWoolZ3cm3HpQ2" : {
+        "oBq0PAYemhMu7wnhSOThRGeff3g1" : {
+          "MESSAGEID1" : {
+            "from" : "me",
+            "text" : "Hi injing"
+          },
+          "MESSAGEID2" : {
+            "from" : "them",
+            "text" : "Hallo Pig"
+          }
+        }
+      }
     },
-    "chats": {
-        "USERID1": {
-            "USERID2": {
-                "MESSAGEID1": {
-                    "text": "Hi injing",
-                    "from": "them"
-                },
-                "MESSAGEID2": {
-                    "text": "Hallo Pig",
-                    "from": "me"
-                }
-            }
-        },
-        "USERID2": {
-            "USERID1": {
-                "MESSAGEID1": {
-                    "text": "Hi injing",
-                    "from": "me"
-                },
-                "MESSAGEID2": {
-                    "text": "Hallo Pig",
-                    "from": "them"
-                }
-            }
-        }
+    "users" : {
+      "OdMedklTCpaDWDdWoolZ3cm3HpQ2" : {
+        "email" : "yayan@test.com",
+        "name" : "yayan",
+        "onLine" : false
+      },
+      "Q3i81bWOQMbcjeeKkKDsxuUZ60t1" : {
+        "email" : "boboy@test.com",
+        "name" : "boboy",
+        "onLine" : false
+      },
+      "oBq0PAYemhMu7wnhSOThRGeff3g1" : {
+        "email" : "yayak@test.com",
+        "name" : "yayak",
+        "onLine" : false
+      }
     }
-}
+  }
+  

@@ -17,8 +17,8 @@ props: ["tab"],
      return {
          formData: {
              name: '',
-             email: '',
-             password: ''
+             email: 'yayak@test.com',
+             password: '123456'
          }
      }
  },
