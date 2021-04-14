@@ -1,4 +1,10 @@
 import { firebaseAuth, firebaseDB } from "boot/firebase";
+import { Notify } from 'quasar'
+import {
+    Loading,
+    QSpinnerGears
+  } from 'quasar'
+import state from "./state";
 
 
 let messagesRef
@@ -6,27 +12,52 @@ let messagesRef
 export function registerUser({ commit }, payload) {
     firebaseAuth.createUserWithEmailAndPassword(payload.email, payload.password)
         .then(response => {
-            console.log('why');
             let userId = firebaseAuth.currentUser.uid
             firebaseDB.ref('users/' + userId).set({
                 name: payload.name,
                 email: payload.email,
                 onLine: true
-            }) 
+            })
+            Notify.create({
+                message: `Register ${ payload.name } Succes`,
+                color: 'green-6',
+                timeout: 500,
+                avatar: 'icons/icon-256x256.png'
+              })
         }).catch(error => {
             console.log(error.message);
         })
 }
 
-export function loginUser({ commit }, payload) {
+export function loginUser({ commit, state }, payload) {
+    Loading.show()
     firebaseAuth.signInWithEmailAndPassword(payload.email, payload.password)
-    .then(response => {
-    }).catch(error => {
-        console.log(error.message);
-    })
+        .then(response => {
+        Loading.hide()
+        Notify.create({
+          message: `Login Succes, Welcome ' ${ state.users[response.user.uid].name }`,
+          color: 'green-6',
+          timeout: 500,
+          avatar: 'icons/icon-256x256.png'
+        })
+        }).catch(error => {
+        Loading.hide()
+        Notify.create({
+          message: 'Username or Password is incorrect',
+          color: 'grey-6',
+          timeout: 500,
+          avatar: 'icons/icon-256x256.png'
+        })
+      })
 }
 export function logoutUser() {
     firebaseAuth.signOut()
+    Notify.create({
+      message: 'Logout Succes',
+      type: 'positive',
+      timeout: 500,
+      avatar: 'icons/icon-256x256.png'
+    })
 }
  
 export function handleAuthStateChanged({ commit, dispatch, state }) {
@@ -103,9 +134,17 @@ export function firebaseGetMessages({ commit, state }, otherUserId) {
         })
     })
 }
-export function firebaseStopGettinhMessages({commit }) {
+export function firebaseStopGettingMessages({ commit }) {
     if (messagesRef) {
         messagesRef.off('child_added')
         commit('clearMessages')
     }
+}
+
+
+export function firebaseSendMessage({ state }, payload) {
+    firebaseDB.ref('chats/' + state.userDetails.userId + '/' + payload.otherUserId).push(payload.messages)
+
+    payload.messages.from = 'them'
+    firebaseDB.ref('chats/' + payload.otherUserId + '/' + state.userDetails.userId).push(payload.messages) 
 }

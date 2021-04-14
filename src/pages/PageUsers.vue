@@ -33,6 +33,11 @@
 
 import { mapGetters } from 'vuex';
 export default {
+  data() {
+    return {
+      dataTemp: ''
+    }
+  },
   computed: {
     ...mapGetters('smackchat', ['users'])
   }

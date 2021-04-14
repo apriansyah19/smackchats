@@ -2,7 +2,15 @@
   <q-form class="q-gutter-md" @submit="submitForm">
       <q-input v-if="tab === 'register'" outlined label="Name" v-model="formData.name"></q-input>
       <q-input outlined type="email" label="Email" v-model="formData.email"></q-input>
-      <q-input outlined type="password" label="Password" v-model="formData.password"></q-input>
+      <q-input outlined :rules="[ val => val.length >= 6 || 'Please use minimum 6 characters']" :type="isPwd ? 'password' : 'text'" label="Password" v-model="formData.password">
+          <template v-slot:append>
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd = !isPwd"
+          />
+        </template>
+      </q-input>
       <div class="row">
         <q-space />
         <q-btn type="submit" color="primary" :label="tab"></q-btn>
@@ -15,10 +23,11 @@ export default {
 props: ["tab"],
  data() {
      return {
+         isPwd: true,
          formData: {
              name: '',
-             email: 'yayak@test.com',
-             password: '123456'
+             email: '',
+             password: ''
          }
      }
  },
