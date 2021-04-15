@@ -1,4 +1,5 @@
-import { firebaseAuth, firebaseDB } from "boot/firebase";
+import { firebaseAuth, firebaseDB, firebaseApp } from "boot/firebase";
+import firebase from "firebase";
 import { Notify } from 'quasar'
 import {
     Loading,
@@ -9,47 +10,47 @@ import state from "./state";
 
 let messagesRef
 
-export function registerUser({ commit }, payload) {
-    firebaseAuth.createUserWithEmailAndPassword(payload.email, payload.password)
-        .then(response => {
-            let userId = firebaseAuth.currentUser.uid
-            firebaseDB.ref('users/' + userId).set({
-                name: payload.name,
-                email: payload.email,
-                onLine: true
-            })
-            Notify.create({
-                message: `Register ${ payload.name } Succes`,
-                color: 'green-6',
-                timeout: 500,
-                avatar: 'icons/icon-256x256.png'
-              })
-        }).catch(error => {
-            console.log(error.message);
-        })
-}
+// export function registerUser({ commit }, payload) {
+//     firebaseAuth.createUserWithEmailAndPassword(payload.email, payload.password)
+//         .then(response => {
+//             let userId = firebaseAuth.currentUser.uid
+//             firebaseDB.ref('users/' + userId).set({
+//                 name: payload.name,
+//                 email: payload.email,
+//                 onLine: true
+//             })
+//             Notify.create({
+//                 message: `Register ${ payload.name } Succes`,
+//                 color: 'green-6',
+//                 timeout: 500,
+//                 avatar: 'icons/icon-256x256.png'
+//               })
+//         }).catch(error => {
+//             console.log(error.message);
+//         })
+// }
 
-export function loginUser({ commit, state }, payload) {
-    Loading.show()
-    firebaseAuth.signInWithEmailAndPassword(payload.email, payload.password)
-        .then(response => {
-        Loading.hide()
-        Notify.create({
-          message: `Login Succes, Welcome ' ${ state.users[response.user.uid].name }`,
-          color: 'green-6',
-          timeout: 500,
-          avatar: 'icons/icon-256x256.png'
-        })
-        }).catch(error => {
-        Loading.hide()
-        Notify.create({
-          message: 'Username or Password is incorrect',
-          color: 'grey-6',
-          timeout: 500,
-          avatar: 'icons/icon-256x256.png'
-        })
-      })
-}
+// export function loginUser({ commit, state }, payload) {
+//     Loading.show()
+//     firebaseAuth.signInWithEmailAndPassword(payload.email, payload.password)
+//         .then(response => {
+//         Loading.hide()
+//         Notify.create({
+//           message: `Login Succes, Welcome ' ${ state.users[response.user.uid].name }`,
+//           color: 'green-6',
+//           timeout: 500,
+//           avatar: 'icons/icon-256x256.png'
+//         })
+//         }).catch(error => {
+//         Loading.hide()
+//         Notify.create({
+//           message: 'Username or Password is incorrect',
+//           color: 'grey-6',
+//           timeout: 500,
+//           avatar: 'icons/icon-256x256.png'
+//         })
+//       })
+// }
 export function logoutUser() {
     firebaseAuth.signOut()
     Notify.create({
@@ -60,6 +61,32 @@ export function logoutUser() {
     })
 }
  
+export function Login({ }) {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    // provider.addScope('profile');
+    // provider.addScope('email');
+    firebase.auth().signInWithPopup(provider).then(result => {
+        // This gives you a Google Access Token.
+        var token = result.credential.accessToken;
+        // The signed-in user info.
+        var user = result.user;
+        console.log(user);
+        firebaseDB.ref('users/' + user.uid).set({
+            name: user.displayName,
+            email: user.email,
+            photo: user.photoURL,
+            onLine: true
+        })
+        Notify.create({
+            message: `Login Succes, Welcome ' ${ user.displayName }`,
+            color: 'green-6',
+            timeout: 500,
+            avatar: 'icons/icon-256x256.png'
+          })
+    });
+
+}
+
 export function handleAuthStateChanged({ commit, dispatch, state }) {
     firebaseAuth.onAuthStateChanged(user => {
         if (user) {
@@ -70,6 +97,7 @@ export function handleAuthStateChanged({ commit, dispatch, state }) {
                 commit('setUserDetails', {
                     name: userDetails.name,
                     email: userDetails.email,
+                    photo: userDetails.photo,
                     userId: userId
                 })
             })

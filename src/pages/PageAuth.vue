@@ -1,7 +1,12 @@
 <template>
-  <q-page class="flex q-pa-sm">
-      <q-card class="full-width">
-        <q-tabs
+  <q-page class="q-pa-sm flex flex-center">
+      <!-- <q-card> -->
+         <q-img src="icons/icon-512x512.png" :ratio="1" style="max-width: 500px; height: 300px;" contain>
+           <div class="absolute-bottom text-subtitle1 text-center">
+             <q-btn @click="$store.dispatch('smackchat/Login')" no-caps color="green" icon="account_circle" label="Login"></q-btn>
+           </div>
+         </q-img>
+        <!-- <q-tabs
           active-color="primary"
           align="justify"
           class="text-grey"
@@ -23,8 +28,8 @@
           <q-tab-panel name="register">
             <login-register :tab="tab"/>
           </q-tab-panel>
-        </q-tab-panels>
-      </q-card>
+        </q-tab-panels> -->
+      <!-- </q-card> -->
   </q-page>
 </template>
 
@@ -36,7 +41,7 @@ export default {
     }
   },
   components: {
-    'login-register' : require('components/LoginRegister.vue').default
+    // 'login-register' : require('components/LoginRegister.vue').default
   }
 }
 </script>

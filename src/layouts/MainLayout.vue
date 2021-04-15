@@ -13,18 +13,18 @@
           {{ $route.name === 'Chat' ?  otherUserDetails.name : $route.name}}
         </q-toolbar-title>
 
-        <q-btn
+        <!-- <q-btn
           v-if="!userDetails.userId"
           dense
           flat
-          to="/auth"
+          @click="$store.dispatch('smackchat/Login')"
           class="absolute-right q-pr-sm"
           no-caps
           icon="account_circle"
-          label="Login"></q-btn>
+          label="Login"></q-btn> -->
 
         <q-btn
-          v-else
+          v-if="userDetails.userId"
           dense
           flat
           @click="$store.dispatch('smackchat/logoutUser')"
