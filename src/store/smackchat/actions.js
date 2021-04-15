@@ -1,5 +1,5 @@
-import { firebaseAuth, firebaseDB, firebaseApp } from "boot/firebase";
-import firebase from "firebase";
+import { firebaseAuth, firebaseDB } from "boot/firebase";
+import firebase from "firebase/app";
 import { Notify } from 'quasar'
 import {
     Loading,
@@ -70,7 +70,6 @@ export function Login({ }) {
         var token = result.credential.accessToken;
         // The signed-in user info.
         var user = result.user;
-        console.log(user);
         firebaseDB.ref('users/' + user.uid).set({
             name: user.displayName,
             email: user.email,

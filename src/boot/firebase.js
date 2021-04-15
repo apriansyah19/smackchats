@@ -18,4 +18,4 @@ let firebaseApp = firebase.initializeApp(firebaseConfig);
 let firebaseAuth = firebaseApp.auth()
 let firebaseDB = firebaseApp.database()
 
-export { firebaseAuth, firebaseDB, firebaseApp }
+export { firebaseAuth, firebaseDB }
